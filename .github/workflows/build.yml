@@ -25,19 +25,19 @@ jobs:
           ./gradlew lintKotlin
 
       - name: Build macOS arm64
-        run: ./gradlew :shared:linkReleaseExecutableMacosArm64
+        run: ./gradlew :app:linkReleaseExecutableMacosArm64
 
       - name: Build macOS x64
-        run: ./gradlew :shared:linkReleaseExecutableMacosX64
+        run: ./gradlew :app:linkReleaseExecutableMacosX64
 
       - name: Upload macOS arm64 binary
         uses: actions/upload-artifact@v6
         with:
           name: macalicious-macos-arm64
-          path: shared/build/bin/macosArm64/releaseExecutable/
+          path: app/build/bin/macosArm64/releaseExecutable/
 
       - name: Upload macOS x64 binary
         uses: actions/upload-artifact@v6
         with:
           name: macalicious-macos-x64
-          path: shared/build/bin/macosX64/releaseExecutable/
+          path: app/build/bin/macosX64/releaseExecutable/
