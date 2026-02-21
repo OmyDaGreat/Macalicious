@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Format & Lint
+        run: |
+          ./gradlew formatKotlin
+          ./gradlew lintKotlin
+
+      - name: Build macOS arm64
+        run: ./gradlew :shared:linkReleaseExecutableMacosArm64
+
+      - name: Build macOS x64
+        run: ./gradlew :shared:linkReleaseExecutableMacosX64
+
+      - name: Upload macOS arm64 binary
+        uses: actions/upload-artifact@v6
+        with:
+          name: macalicious-macos-arm64
+          path: shared/build/bin/macosArm64/releaseExecutable/
+
+      - name: Upload macOS x64 binary
+        uses: actions/upload-artifact@v6
+        with:
+          name: macalicious-macos-x64
+          path: shared/build/bin/macosX64/releaseExecutable/
